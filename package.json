@@ -1,0 +1,8 @@
+{
+  "name": "puck-leds",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:benfoxall/puck-leds.git",
+  "author": "Ben Foxall <benfoxall@gmail.com>",
+  "license": "MIT"
+}
