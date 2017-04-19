@@ -10,4 +10,6 @@ document.body.addEventListener('click', function(e){
     var color = window.getComputedStyle(e.target).color
     leds.style.setProperty('--led-color', color)
   }
-})
+}, false)
+
+navigator.serviceWorker.register('service-worker.js')
