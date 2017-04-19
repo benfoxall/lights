@@ -34,11 +34,12 @@ a:hover {
 }
 
 [href="#red"]    {color: #f00 }
-[href="#blue"]   {color: #08f }
-[href="#yellow"] {color: #F8E81C }
-[href="#pink"]   {color: #BD0FE1 }
-[href="#green"]  {color: #0f0 }
 [href="#orange"] {color: #F60 }
+[href="#yellow"] {color: #F8E81C }
+[href="#green"]  {color: #0f0 }
+[href="#blue"]   {color: #08f }
+[href="#indigo"] {color: #4B0082 }
+[href="#violet"] {color: #EE82EE }
 [href="#white"]  {color: #FFF }
 [href="#black"]  {color: #000 }
 
@@ -62,6 +63,7 @@ a:hover {
   transition-delay: inherit;
 
   background: var(--led-color);
+  box-shadow: 0 0 4vmin var(--led-color);
 
   content: '';
   display: block;
