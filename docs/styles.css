@@ -72,3 +72,14 @@ a:hover {
   border-radius: 100%;
   display: block;
 }
+
+#connect {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 8vmin;
+  position: fixed;
+  left:0;
+  bottom:0;
+  padding: .5em;
+}
