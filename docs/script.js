@@ -59,8 +59,8 @@ if(navigator.bluetooth) {
 
       lights = characteristic
 
-      var buf = Uint8ClampedArray.from([20]).buffer
-
+      // switch to black
+      var buf = Uint8ClampedArray.from([0,0,0]).buffer
       return characteristic.writeValue(buf)
 
 
