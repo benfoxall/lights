@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fairy-lights'
+const CACHE_NAME = 'fairy-lights-2'
 
 const urlsToCache = [
   '.',

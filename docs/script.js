@@ -66,11 +66,11 @@ if(navigator.bluetooth) {
     })
     .then(server => {
       connect_status.textContent = 'Requesting service'
-      return server.getPrimaryService(0xBCDE);
+      return server.getPrimaryService(0xBCDE)
     })
     .then(service => {
       connect_status.textContent = 'Requesting characteristic'
-      return service.getCharacteristic(0xABCD);
+      return service.getCharacteristic(0xABCD)
     })
     .then(characteristic => {
       window.characteristic = characteristic
@@ -85,6 +85,11 @@ if(navigator.bluetooth) {
       return characteristic.writeValue(buf)
 
 
+    })
+    .catch(e => {
+      if(gatt_server) gatt_server.disconnect()
+      console.error(e)
+      connect_status.textContent = 'Error: ' + e
     })
     .then(c => console.log(c))
 
