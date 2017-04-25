@@ -17,7 +17,6 @@ document.body.addEventListener('click', function(e){
     //todo: better
     if(lights) {
       var parts = color.match(rgbRE);
-      console.log(parts)
       var buf = Uint8ClampedArray.from([
         parseInt(parts[1],10),
         parseInt(parts[2],10),
@@ -32,30 +31,52 @@ document.body.addEventListener('click', function(e){
   }
 }, false)
 
-navigator.serviceWorker.register('service-worker.js')
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(function(reg) {
+      console.log('Registration succeeded. Scope is ' + reg.scope);
+    }).catch(function(error) {
+      console.log('Registration failed with ' + error);
+    })
+}
 
+var gatt_server = null
 
 
 if(navigator.bluetooth) {
-  connect.style.display = 'block';
+  connect.style.display = 'block'
+
+  var connect_status = connect.querySelector('span')
+
+
 
   connect.addEventListener('click', () => {
+
+    connect_status.textContent = 'Requesting device'
 
     navigator.bluetooth.requestDevice({
       filters: [{namePrefix: 'Puck'}],
       optionalServices: [0xBCDE]
     })
-    .then(device => device.gatt.connect())
+    .then(device => {
+      connect_status.textContent = 'Connecting'
+
+      gatt_server = device.gatt;
+      return device.gatt.connect()
+    })
     .then(server => {
+      connect_status.textContent = 'Requesting service'
       return server.getPrimaryService(0xBCDE);
     })
     .then(service => {
+      connect_status.textContent = 'Requesting characteristic'
       return service.getCharacteristic(0xABCD);
     })
     .then(characteristic => {
       window.characteristic = characteristic
 
       connect.style.display = 'none'
+      disconnect.style.display = 'block'
 
       lights = characteristic
 
@@ -69,5 +90,19 @@ if(navigator.bluetooth) {
 
 
   })
+
+
+  disconnect.addEventListener('click', () => {
+    gatt_server.disconnect()
+
+    lights = null
+
+    connect.style.display = 'block'
+    disconnect.style.display = 'none'
+    connect_status.textContent = ''
+
+  })
+
+
 
 }
