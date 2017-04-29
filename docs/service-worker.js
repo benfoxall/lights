@@ -5,7 +5,7 @@ const urlsToCache = [
   'script.js',
   'styles.css',
   'manifest.json',
-  'https://fonts.googleapis.com/css?family=Open+Sans:800i'
+  'https://fonts.googleapis.com/css?family=Open+Sans:800i&text=REDOANGYLWBUIVTHCK'
 ]
 
 self.addEventListener('install', event => {
