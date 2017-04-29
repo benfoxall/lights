@@ -2,6 +2,18 @@
   --led-color: #333;
 }
 
+
+/* google-webfonts-helper */
+/* open-sans-800italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 800;
+  src: local('Open Sans Extrabold Italic'), local('OpenSans-ExtraboldItalic'),
+       url('fonts/open-sans-v13-latin-800italic.woff2') format('woff2'),
+       url('fonts/open-sans-v13-latin-800italic.woff') format('woff');
+}
+
 body {
   background: #000;
   color: #fff;

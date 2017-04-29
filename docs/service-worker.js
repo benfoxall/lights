@@ -9,7 +9,7 @@ const urlsToCache = [
   'script.js',
   'styles.css',
   'manifest.json',
-  'https://fonts.googleapis.com/css?family=Open+Sans:800i&text=REDOANGYLWBUIVTHCK'
+  'fonts/open-sans-v13-latin-800italic.woff2'
 ]
 
 self.addEventListener('install', event => {
