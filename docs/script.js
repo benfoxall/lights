@@ -26,14 +26,12 @@ document.body.addEventListener('click', function(e){
 if ('serviceWorker' in navigator)
   navigator.serviceWorker.register('service-worker.js')
 
-var gatt_server = null
 
 
 if(navigator.bluetooth) {
-  connect.style.display = 'block'
-
-
+  var device = null
   var status_span = connect.querySelector('span')
+
   function _status(text) {
     return function(value) {
       status_span.textContent = text
@@ -41,6 +39,7 @@ if(navigator.bluetooth) {
     }
   }
 
+  connect.style.display = 'block'
 
   connect.addEventListener('click', () => {
 
@@ -52,8 +51,8 @@ if(navigator.bluetooth) {
     })
 
     .then(_status('Connecting'))
-    .then(device => gatt_server = device.gatt)
-    .then(gatt => gatt.connect())
+    .then(device_ => device = device_)
+    .then(device => device.gatt.connect())
 
     .then(_status('Requesting service'))
     .then(server => server.getPrimaryService(0xBCDE))
@@ -70,7 +69,7 @@ if(navigator.bluetooth) {
 
     })
     .catch(e => {
-      if(gatt_server) gatt_server.disconnect()
+      if(device) device.gatt.disconnect()
       _status('Not connected. ' + e)()
       console.error(e)
     })
@@ -79,16 +78,14 @@ if(navigator.bluetooth) {
 
 
   disconnect.addEventListener('click', () => {
-    gatt_server.disconnect()
 
     lights = null
+    device.gatt.disconnect()
 
     connect.style.display = 'block'
     disconnect.style.display = 'none'
     status_span.textContent = ''
 
   })
-
-
 
 }
