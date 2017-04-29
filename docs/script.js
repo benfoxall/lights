@@ -32,53 +32,48 @@ var gatt_server = null
 if(navigator.bluetooth) {
   connect.style.display = 'block'
 
-  var connect_status = connect.querySelector('span')
 
+  var status_span = connect.querySelector('span')
+  function _status(text) {
+    return function(value) {
+      status_span.textContent = text
+      return value
+    }
+  }
 
 
   connect.addEventListener('click', () => {
 
-    connect_status.textContent = 'Requesting device'
+    _status('Requesting device')()
 
     navigator.bluetooth.requestDevice({
       filters: [{namePrefix: 'Puck'}],
       optionalServices: [0xBCDE]
     })
-    .then(device => {
-      connect_status.textContent = 'Connecting'
 
-      gatt_server = device.gatt;
-      return device.gatt.connect()
-    })
-    .then(server => {
-      connect_status.textContent = 'Requesting service'
-      return server.getPrimaryService(0xBCDE)
-    })
-    .then(service => {
-      connect_status.textContent = 'Requesting characteristic'
-      return service.getCharacteristic(0xABCD)
-    })
+    .then(_status('Connecting'))
+    .then(device => gatt_server = device.gatt)
+    .then(gatt => gatt.connect())
+
+    .then(_status('Requesting service'))
+    .then(server => server.getPrimaryService(0xBCDE))
+
+    .then(_status('Requesting characteristic'))
+    .then(service => service.getCharacteristic(0xABCD))
+
     .then(characteristic => {
-      window.characteristic = characteristic
 
       connect.style.display = 'none'
       disconnect.style.display = 'block'
 
       lights = characteristic
 
-      // switch to black
-      var buf = Uint8ClampedArray.from([0,0,0]).buffer
-      return characteristic.writeValue(buf)
-
-
     })
     .catch(e => {
       if(gatt_server) gatt_server.disconnect()
+      _status('Not connected. ' + e)()
       console.error(e)
-      connect_status.textContent = 'Error: ' + e
     })
-    .then(c => console.log(c))
-
 
   })
 
@@ -90,7 +85,7 @@ if(navigator.bluetooth) {
 
     connect.style.display = 'block'
     disconnect.style.display = 'none'
-    connect_status.textContent = ''
+    status_span.textContent = ''
 
   })
 
