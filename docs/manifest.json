@@ -34,7 +34,7 @@
     }
   ],
   "start_url": "https://benjaminbenben.com/lights/?homescreen",
-  "background_color": "#333",
+  "background_color": "#000",
   "theme_color": "#000",
   "display": "fullscreen",
   "orientation": "portrait"
