@@ -1,6 +1,8 @@
 var lights = null
-var rgbRE = /rgb\((\d+), (\d+), (\d+)/
 
+function parseRGB(str) {
+  return [].slice.call(str.match(/rgb\((\d+), (\d+), (\d+)/), 1).map(Number)
+}
 
 for (var i = 0; i < 20; i++) {
   var led = document.createElement('li')
@@ -14,31 +16,15 @@ document.body.addEventListener('click', function(e){
     var color = window.getComputedStyle(e.target).color
     leds.style.setProperty('--led-color', color)
 
-    //todo: better
     if(lights) {
-      var parts = color.match(rgbRE);
-      var buf = Uint8ClampedArray.from([
-        parseInt(parts[1],10),
-        parseInt(parts[2],10),
-        parseInt(parts[3],10)
-      ]).buffer
-
-      lights.writeValue(buf)
-
+      var buffer = Uint8ClampedArray.from(parseRGB(color)).buffer
+      lights.writeValue(buffer)
     }
-
-
   }
 }, false)
 
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator)
   navigator.serviceWorker.register('service-worker.js')
-    .then(function(reg) {
-      console.log('Registration succeeded. Scope is ' + reg.scope);
-    }).catch(function(error) {
-      console.log('Registration failed with ' + error);
-    })
-}
 
 var gatt_server = null
 
